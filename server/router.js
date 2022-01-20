@@ -4,7 +4,7 @@ const findController = require("./controllers/findshops.controller");
 const userController = require("./controllers/user.controller");
 const shopController = require("./controllers/shop.controller");
 const imageUploadController = require("./controllers/image.controller");
-const authMiddleware = require("./middlewares/auth")
+const authMiddleware = require("./middlewares/auth");
 
 router.post("/filteredshops", findController.findShopsByKeyword);
 router.post("/usershops", findController.findShopsByUserId);
@@ -17,5 +17,7 @@ router.post("/uploadimage", imageUploadController.upload);
 router.post("/addimage", shopController.addImageToShop);
 router.post("/addproducts", shopController.addProductsToShop);
 router.post("/removeproduct", shopController.removeProduct);
+router.delete("/deleteUser", userController.deleteUser);
+router.all("*", (req, res) => res.send("Page not found").status(404));
 
 module.exports = router;

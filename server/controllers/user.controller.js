@@ -5,11 +5,13 @@ const create = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({
     where: {
-      email: email
-    }
+      email: email,
+    },
   });
   if (user) {
-    return res.status(409).send({ error: "409", message: "Invalid e-mail and/or password" });
+    return res
+      .status(409)
+      .send({ error: "409", message: "Invalid e-mail and/or password" });
   }
 
   try {
@@ -22,15 +24,15 @@ const create = async (req, res) => {
     console.log(error);
     res.status(400).send({ error: "400", message: "Could not create user" });
   }
-}
+};
 
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({
       where: {
-        email: email
-      }
+        email: email,
+      },
     });
     const validatedPass = await bcrypt.compare(password, user.password);
     if (!validatedPass) throw new Error();
@@ -40,9 +42,9 @@ const login = async (req, res) => {
     console.log(error);
     res
       .status(401)
-      .send({ error: '401', message: 'Username or password is incorrect' });
+      .send({ error: "401", message: "Username or password is incorrect" });
   }
-}
+};
 
 const profile = async (req, res) => {
   try {
@@ -51,21 +53,41 @@ const profile = async (req, res) => {
     res.status(200).send(user);
   } catch {
     console.log(error);
-    res.status(404).send({ error, message: 'User not found' });
+    res.status(404).send({ error, message: "User not found" });
   }
-}
+};
 
 const logout = async (req, res) => {
   req.session.destroy((error) => {
     if (error) {
       res
         .status(500)
-        .send({ error, message: 'Could not log out, please try again' });
+        .send({ error, message: "Could not log out, please try again" });
     } else {
-      res.clearCookie('sid');
-      res.status(200).send({ message: 'Logout successful' });
+      res.clearCookie("sid");
+      res.status(200).send({ message: "Logout successful" });
     }
   });
-}
+};
 
-module.exports = { create, login, logout, profile }
+const deleteUser = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({
+    where: {
+      email: email,
+    },
+  });
+  if (!user) {
+    return res
+      .status(404)
+      .send({ error: "404", message: "User not registered" });
+  }
+  try {
+    user.destroy();
+    res.status(200).send("User deleted");
+  } catch (error) {
+    res.status(400).send({ error: "400", message: "Could not delete user" });
+  }
+};
+
+module.exports = { create, login, logout, profile, deleteUser };

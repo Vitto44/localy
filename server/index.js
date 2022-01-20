@@ -37,4 +37,7 @@ app.use(router);
   app.listen(PORT, () => {
     console.log(`Server up and running on http://localhost:${PORT}`);
   });
+  // app.on("close", () => sequelize.close());
 })();
+
+module.exports = app;
