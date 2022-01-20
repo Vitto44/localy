@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "postgres",
-    "password": "codecloudnine",
+    "password": "0000",
     "database": "localydb",
     "host": "127.0.0.1",
     "dialect": "postgres"

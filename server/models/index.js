@@ -8,12 +8,10 @@ const config = {
 };
 
 const sequelize = new Sequelize(
-  "localydb",
-  "postgres",
-  "codecloudnine",
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
   config
 );
-
-console.log(process.env.DB_PASSWORD);
 
 module.exports = sequelize;
