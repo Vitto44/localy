@@ -8,30 +8,30 @@ const findShopsByKeyword = async (req, res) => {
     const shops = await Shop.findAll({
       where: {
         products: {
-          [Op.contains]: [`${keyword}`]
-        }
-      }
+          [Op.contains]: [`${keyword}`],
+        },
+      },
     });
     res.status(200).send(shops);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
-}
+};
 
 const findShopsByUserId = async (req, res) => {
   try {
     let { UserId } = req.body;
     const shops = await Shop.findAll({
       where: {
-        UserId: UserId
-      }
+        UserId: UserId,
+      },
     });
     res.status(200).send(shops);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
-}
+};
 
-module.exports = { findShopsByKeyword, findShopsByUserId }
+module.exports = { findShopsByKeyword, findShopsByUserId };
