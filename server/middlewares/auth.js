@@ -6,10 +6,12 @@ const authMiddleware = async (req, res, next) => {
     //TODO change to findbyID
     const user = await User.findOne({ where: { id: uid } });
     if (!user) {
+      next();
       throw new Error();
     } else {
       next();
     }
+    next();
   } catch (error) {
     console.log(error);
     return res.sendStatus(401);

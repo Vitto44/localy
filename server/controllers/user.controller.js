@@ -28,6 +28,7 @@ const create = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    console.log(req.session);
     const { email, password } = req.body;
     const user = await User.findOne({
       where: {
@@ -50,6 +51,7 @@ const profile = async (req, res) => {
   try {
     const { id, firstName, lastName } = req.user;
     const user = { id, firstName, lastName };
+    console.log(user);
     res.status(200).send(user);
   } catch (error) {
     console.log(error);

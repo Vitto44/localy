@@ -2,66 +2,69 @@ const URL = "http://localhost:3001";
 
 function fetchRequest(url, options) {
   return fetch(url, options)
-    .then(res => res.status < 400 ? res : Promise.reject())
-    .then(res => res.status !== 204 ? res.json() : res)
-    .catch(err => {
-      console.log("Error:", err)
+    .then((res) => (res.status < 400 ? res : Promise.reject()))
+    .then((res) => (res.status !== 204 ? res.json() : res))
+    .catch((err) => {
+      console.log("Error:", err);
     });
 }
 
 export function getShopsByKeyword(keyword) {
-  keyword = { keyword: keyword }
+  keyword = { keyword: keyword };
   return fetchRequest(`${URL}/filteredshops`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(keyword)
+    body: JSON.stringify(keyword),
   });
 }
 
-export function getShopsByUserId(UserId) {
-  UserId = { UserId: UserId }
-  return fetchRequest(`${URL}/usershops`, {
+export async function getShopsByUserId(UserId) {
+  UserId = { UserId: UserId };
+  console.log(UserId);
+  const test = await fetchRequest(`${URL}/usershops`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(UserId)
+    body: JSON.stringify(UserId),
   });
+  console.log(test);
+  return test;
 }
 
 export function register(user) {
   return fetchRequest(`${URL}/register`, {
     method: "POST",
-    credentials: 'include',
-    mode: 'cors',
+    credentials: "include",
+    mode: "cors",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(user)
+    body: JSON.stringify(user),
   });
 }
 
 export function login(user) {
   return fetchRequest(`${URL}/login`, {
     method: "POST",
-    credentials: 'include',
-    mode: 'cors',
+    credentials: "include",
+    mode: "cors",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(user)
+    body: user ? JSON.stringify(user) : null,
   });
 }
 
 export function profile() {
   return fetchRequest(`${URL}/profile`, {
     method: "GET",
-    credentials: 'include',
-    mode: 'cors',
+    credentials: "include",
+    mode: "cors",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
   });
 }
@@ -69,10 +72,10 @@ export function profile() {
 export function logout() {
   return fetchRequest(`${URL}/logout`, {
     method: "POST",
-    credentials: 'include',
-    mode: 'cors',
+    credentials: "include",
+    mode: "cors",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
   });
 }
@@ -80,59 +83,59 @@ export function logout() {
 export function createShop(shop) {
   return fetchRequest(`${URL}/createshop`, {
     method: "POST",
-    credentials: 'include',
-    mode: 'cors',
+    credentials: "include",
+    mode: "cors",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(shop)
+    body: JSON.stringify(shop),
   });
 }
 
 export function uploadImage(base64EncodedImage) {
   return fetchRequest(`${URL}/uploadimage`, {
     method: "POST",
-    credentials: 'include',
-    mode: 'cors',
+    credentials: "include",
+    mode: "cors",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ data: base64EncodedImage })
-  })
+    body: JSON.stringify({ data: base64EncodedImage }),
+  });
 }
 
 export function addImage(shopIdAndImgUrlObj) {
   return fetchRequest(`${URL}/addimage`, {
     method: "POST",
-    credentials: 'include',
-    mode: 'cors',
+    credentials: "include",
+    mode: "cors",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(shopIdAndImgUrlObj)
-  })
+    body: JSON.stringify(shopIdAndImgUrlObj),
+  });
 }
 
 export function addProducts(shopIdAndProductsObj) {
   return fetchRequest(`${URL}/addproducts`, {
     method: "POST",
-    credentials: 'include',
-    mode: 'cors',
+    credentials: "include",
+    mode: "cors",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(shopIdAndProductsObj)
-  })
+    body: JSON.stringify(shopIdAndProductsObj),
+  });
 }
 
 export function removeProduct(shopIdAndProductObj) {
   return fetchRequest(`${URL}/removeproduct`, {
     method: "POST",
-    credentials: 'include',
-    mode: 'cors',
+    credentials: "include",
+    mode: "cors",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(shopIdAndProductObj)
-  })
+    body: JSON.stringify(shopIdAndProductObj),
+  });
 }

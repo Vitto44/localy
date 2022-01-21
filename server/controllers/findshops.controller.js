@@ -22,6 +22,7 @@ const findShopsByKeyword = async (req, res) => {
 const findShopsByUserId = async (req, res) => {
   try {
     let { UserId } = req.body;
+    console.log(UserId);
     const shops = await Shop.findAll({
       where: {
         UserId: UserId,

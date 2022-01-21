@@ -26,13 +26,13 @@ describe("Shop Testing", () => {
       .catch((err) => err);
   });
 
-  test("Should find a shop", () => {
-    request
-      .post("/createshop")
-      .send(shopDummy)
-      .then((res) => expect(res.statusCode).toBe(201))
-      .catch((err) => err);
-  });
+  // test("Should find a shop", () => {
+  //   request
+  //     .post("/createshop")
+  //     .send(shopDummy)
+  //     .then((res) => expect(res.statusCode).toBe(201))
+  //     .catch((err) => err);
+  // });
 
   test("Should add image to shop", () => {
     request
