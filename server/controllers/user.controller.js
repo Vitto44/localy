@@ -51,7 +51,7 @@ const profile = async (req, res) => {
     const { id, firstName, lastName } = req.user;
     const user = { id, firstName, lastName };
     res.status(200).send(user);
-  } catch {
+  } catch (error) {
     console.log(error);
     res.status(404).send({ error, message: "User not found" });
   }
