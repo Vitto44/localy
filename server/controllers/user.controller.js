@@ -78,9 +78,7 @@ const deleteUser = async (req, res) => {
     },
   });
   if (!user) {
-    return res
-      .status(404)
-      .send({ error: "404", message: "User not registered" });
+    return res.status(404).send({ error: "404", message: "No user" });
   }
   try {
     user.destroy();

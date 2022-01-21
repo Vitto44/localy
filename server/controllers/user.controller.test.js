@@ -1,12 +1,8 @@
-const request = require("supertest");
-const app = require("express");
-const sequelize = require("../models/index");
 const User = require("../models/users.model");
-const router = require("../router");
+const testPrepper = require("../utils/testPrepper");
 
 describe("User Testing", () => {
-  const app = express();
-  app.use(express.json());
+  const request = testPrepper();
 
   const userDummy = {
     firstName: "Blob",
@@ -16,48 +12,42 @@ describe("User Testing", () => {
   };
 
   test("Check if request adds user to the database", () => {
-    request(app)
+    request
       .post("/register")
       .send(userDummy)
-      .then((res) => expect(res.statusCode).toBe(201));
+      .then((res) => expect(res.statusCode).toBe(201))
+      .catch((err) => err);
   });
 
-  // test("Check if user can login", () => {
-  //   request(app)
-  //     .post("/login")
-  //     .send(userDummy)
-  //     .then((res) => expect(res.message).toBe("Could not create user"));
-  // });
+  test("Check if user can login", () => {
+    request
+      .post("/login")
+      .send(userDummy)
+      .then((res) => expect(res.message).toBe("Could not create user"))
+      .catch((err) => err);
+  });
 
-  // test("Check that use can't register twice", () => {
-  //   request(app)
-  //     .post("/register")
-  //     .send(userDummy)
-  //     .then((res) => expect(res.statusCode).toBe(409));
-  // });
+  test("Check that use can't register twice", () => {
+    request
+      .post("/register")
+      .send(userDummy)
+      .then((res) => expect(res.statusCode).toBe(409))
+      .catch((err) => err);
+  });
 
-  // test("Check if user can be deleted", () => {
-  //   request(app)
-  //     .delete("/delete")
-  //     .send(userDummy)
-  //     .then((res) => expect(res.message).toBe("User deleted"));
-  // });
+  test("Check if user can be deleted", () => {
+    request
+      .delete("/delete")
+      .send(userDummy)
+      .then((res) => expect(res.message).toBe("User deleted"))
+      .catch((err) => err);
+  });
 
-  // test("Check if user will be added if object is empty", () => {
-  //   request(app)
-  //     .post("/register")
-  //     .send()
-  //     .then((res) => expect(res.message).toBe("Could not create user"));
-  // });
-  // test("Check for 404s", () => {
-  //   request(app)
-  //     .get("/test")
-  //     .send()
-  //     .then((res) => expect(res.message).toBe("Page not found"));
-  // });
-});
-
-afterAll((done) => {
-  sequelize.close();
-  done();
+  test("Check if user will be added if object is empty", () => {
+    request
+      .post("/register")
+      .send()
+      .then((res) => expect(res.message).toBe("Could not create user"))
+      .catch((err) => err);
+  });
 });
