@@ -5,14 +5,17 @@ const express = require("express");
 const SECRET = process.env.SECRET;
 const router = require("../router");
 
-beforeAll(async () => {
-  await sequelize.sync();
-  // done();
-});
-
 describe("Middleware test", () => {
+  beforeAll(async () => {
+    await sequelize.sync();
+  });
+  afterAll((done) => {
+    sequelize.close();
+    done();
+  });
+
   const user = {
-    email: "naasd23bdJoon@t.cz",
+    email: "Jonathan@email.cz",
     password: "test",
     firstName: "Jonathan",
     lastName: "Doe",
@@ -38,19 +41,10 @@ describe("Middleware test", () => {
   );
   app.use(router);
   const request = superset(app);
+
   test("Should execute next when auth is ok", async () => {
     // create new User
     const newUser = await request.post("/register").send(user);
-
-    // retrieve uid from new created User
-    // const newReq = {
-    //   session: {
-    //     uid: newUser.header["set-cookie"][0].slice(
-    //       4,
-    //       newUser.header["set-cookie"][0].indexOf(";")
-    //     ),
-    //   },
-    // };
 
     // send get request with uid in payload to /profile endpoint
     request
@@ -61,9 +55,5 @@ describe("Middleware test", () => {
 
     // delete the newly created user
     await request.delete("/deleteUser").send(user.email);
-  });
-  afterAll((done) => {
-    sequelize.close();
-    done();
   });
 });

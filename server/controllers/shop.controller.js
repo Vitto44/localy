@@ -5,25 +5,29 @@ const createShop = async (req, res) => {
     const { products, picture } = req.body;
     const prodArr = products.split(",");
     const pictArr = picture.split(",");
-    const shop = await Shop.create({ ...req.body, products: prodArr, picture: pictArr })
-    res.status(200).send(shop);
+    const shop = await Shop.create({
+      ...req.body,
+      products: prodArr,
+      picture: pictArr,
+    });
+    res.status(201).send(shop);
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "400", message: "Could not create shop" });
   }
-}
+};
 
 const addImageToShop = async (req, res) => {
   try {
     const newPicture = req.body.picture;
     const shopId = req.body.shopId;
     const shop = Shop.findOne({
-      where: { id: shopId }
-    }).then(shop => {
+      where: { id: shopId },
+    }).then((shop) => {
       shop.sequelize.query(
         `UPDATE "Shops" SET picture='{${[
           shop.picture,
-          newPicture
+          newPicture,
         ]}}'WHERE id=${shopId}`
       );
     });
@@ -33,7 +37,7 @@ const addImageToShop = async (req, res) => {
     console.log(error);
     res.status(400).send({ error: "400", message: "Could not create shop" });
   }
-}
+};
 
 const addProductsToShop = async (req, res) => {
   try {
@@ -42,12 +46,12 @@ const addProductsToShop = async (req, res) => {
     const shopId = req.body.shopId;
 
     const shop = Shop.findOne({
-      where: { id: shopId }
-    }).then(shop => {
+      where: { id: shopId },
+    }).then((shop) => {
       shop.sequelize.query(
         `UPDATE "Shops" SET products='{${[
           shop.products,
-          ...newProdArr
+          ...newProdArr,
         ]}}'WHERE id=${shopId}`
       );
     });
@@ -57,18 +61,18 @@ const addProductsToShop = async (req, res) => {
     console.log(error);
     res.status(400).send({ error: "400", message: "Could not create shop" });
   }
-}
+};
 
 const removeProduct = async (req, res) => {
   try {
     const productToDelete = req.body.product;
     const shopId = req.body.shopId;
     const shop = Shop.findOne({
-      where: { id: shopId }
-    }).then(shop => {
+      where: { id: shopId },
+    }).then((shop) => {
       shop.sequelize.query(
         `UPDATE "Shops" SET products='{${[
-          shop.products.filter(product => product !== productToDelete)
+          shop.products.filter((product) => product !== productToDelete),
         ]}}'WHERE id=${shopId}`
       );
     });
@@ -78,6 +82,11 @@ const removeProduct = async (req, res) => {
     console.log(error);
     res.status(400).send({ error: "400", message: "Could not create shop" });
   }
-}
+};
 
-module.exports = { createShop, addImageToShop, addProductsToShop, removeProduct }
+module.exports = {
+  createShop,
+  addImageToShop,
+  addProductsToShop,
+  removeProduct,
+};
