@@ -2,8 +2,7 @@ const User = require("../models/users.model");
 
 const authMiddleware = async (req, res, next) => {
   try {
-    console.log(req.session);
-    const { sid } = req.session;
+    const { uid } = req.session;
     //TODO change to findbyID
     const user = await User.findOne({ where: { id: uid } });
     if (!user) {

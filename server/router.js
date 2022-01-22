@@ -6,21 +6,23 @@ const shopController = require("./controllers/shop.controller");
 const imageUploadController = require("./controllers/image.controller");
 const authMiddleware = require("./middlewares/auth");
 
+//TODO ADD authentication endpoint
+
 // search routes
 router.post("/search", findController.findShopsByKeyword); //find by word
 
 // shops routes
 router.get("/shop", findController.findShopsByUserId); //shop find by ID
 router.post("/shop", shopController.createShop); //create shop
-router.put("/shop", shopController.addImageToShop); //add image of a shop
-router.put("/shop", shopController.addProductsToShop); //add product
-router.put("/shop", shopController.removeProduct); //remove product
+router.put("/addImageToShop", shopController.addImageToShop); //add image of a shop
+router.put("/addProductsToShop", shopController.addProductsToShop); //add product
+router.put("/removeProducts", shopController.removeProduct); //remove product
 router.put("/shop", imageUploadController.upload); //upload image
-router.delete("/shop", authMiddleware, shopController.deleteShop); //wanna guess?
+router.delete("/deleteShop", authMiddleware, shopController.deleteShop); //wanna guess?
 
 // user routes
 // router.post("/user", userController.create); // create user
-router.post("/user", userController.login); // login user
+router.post("/user", authMiddleware, userController.login); // login user
 router.get("/user", authMiddleware, userController.login); // login user
 router.delete("/user", authMiddleware, userController.deleteUser); // delete user
 router.get("/profile", userController.profile);

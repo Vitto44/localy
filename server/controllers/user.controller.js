@@ -28,6 +28,9 @@ const create = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    if (!req.body) {
+      res.sendStatus(202);
+    }
     const { email, password } = req.body;
     const user = await User.findOne({
       where: {

@@ -19,6 +19,7 @@ const createShop = async (req, res) => {
 
 const addImageToShop = async (req, res) => {
   try {
+    const upload = require("./image.controller");
     const newPicture = req.body.picture;
     const shopId = req.body.shopId;
     const shop = Shop.findOne({
