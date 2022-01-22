@@ -1,6 +1,6 @@
 const User = require("../models/users.model");
 const bcrypt = require("bcrypt");
-
+// testing git
 const create = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({
