@@ -6,15 +6,39 @@ class Shop extends Model {}
 
 Shop.init(
   {
-    name: DataTypes.STRING,
-    category: DataTypes.STRING,
-    address: DataTypes.STRING,
+    id: {
+      type: Sequelize.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.UUIDV4,
+    },
+    name: {
+      type: DataTypes.STRING,
+      notNull: true,
+    },
+    category: {
+      type: DataTypes.STRING,
+      notNull: true,
+    },
+    address: {
+      type: DataTypes.STRING,
+      notNull: true,
+    },
     telephone: DataTypes.BIGINT,
-    email: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      isEmail: true,
+      notNull: true,
+    },
     website: DataTypes.STRING,
     description: DataTypes.STRING,
-    latitude: DataTypes.FLOAT,
-    longitude: DataTypes.FLOAT,
+    latitude: {
+      type: DataTypes.FLOAT,
+      notNull: true,
+    },
+    longitude: {
+      type: DataTypes.FLOAT,
+      notNull: true,
+    },
     products: DataTypes.ARRAY(Sequelize.TEXT),
     picture: DataTypes.ARRAY(Sequelize.TEXT),
   },

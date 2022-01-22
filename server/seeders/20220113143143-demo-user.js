@@ -23,7 +23,7 @@ module.exports = {
           ],
           createdAt: new Date(),
           updatedAt: new Date(),
-          UserId: 1,
+          UserId: "199c4a8f-bd95-4095-bb4c-358f9ce45399",
         },
         {
           name: "Roses Are Red",
@@ -45,7 +45,7 @@ module.exports = {
           ],
           createdAt: new Date(),
           updatedAt: new Date(),
-          UserId: 1,
+          UserId: "199c4a8f-bd95-4095-bb4c-358f9ce45399",
         },
         {
           name: "Coding Late at Night",
@@ -72,7 +72,7 @@ module.exports = {
           ],
           createdAt: new Date(),
           updatedAt: new Date(),
-          UserId: 1,
+          UserId: "199c4a8f-bd95-4095-bb4c-358f9ce45399",
         },
         {
           name: "Oh My Blossom",
@@ -92,7 +92,7 @@ module.exports = {
           ],
           createdAt: new Date(),
           updatedAt: new Date(),
-          UserId: 1,
+          UserId: "199c4a8f-bd95-4095-bb4c-358f9ce45399",
         },
         {
           name: "Get Them Flowers",
@@ -112,7 +112,7 @@ module.exports = {
           ],
           createdAt: new Date(),
           updatedAt: new Date(),
-          UserId: 1,
+          UserId: "199c4a8f-bd95-4095-bb4c-358f9ce45399",
         },
         {
           name: "Flowers United",
@@ -139,7 +139,7 @@ module.exports = {
           ],
           createdAt: new Date(),
           updatedAt: new Date(),
-          UserId: 1,
+          UserId: "199c4a8f-bd95-4095-bb4c-358f9ce45399",
         },
       ],
       {}

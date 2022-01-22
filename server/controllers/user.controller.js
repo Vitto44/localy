@@ -2,20 +2,18 @@ const User = require("../models/users.model");
 const bcrypt = require("bcrypt");
 
 const create = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({
-    where: {
-      email: email,
-    },
-  });
-  if (user) {
-    return res
-      .status(409)
-      .send({ error: "409", message: "Invalid e-mail and/or password" });
-  }
-
   try {
-    if (password === "") throw new Error();
+    const { email, password } = req.body;
+    const user = await User.findOne({
+      where: {
+        email: email,
+      },
+    });
+    if (user) {
+      return res
+        .status(409)
+        .send({ error: "409", message: "Invalid e-mail and/or password" });
+    }
     const hash = await bcrypt.hash(password, 10);
     const newUser = await User.create({ ...req.body, password: hash });
     req.session.uid = newUser.id;
@@ -28,9 +26,7 @@ const create = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    console.log(req.body);
     if (!req.body.email) {
-      console.log("working <=============================================");
       res.sendStatus(202);
     } else {
       const { email, password } = req.body;
@@ -39,28 +35,23 @@ const login = async (req, res) => {
           email: email,
         },
       });
-      const validatedPass = await bcrypt.compare(password, user.password);
-      if (!validatedPass) throw new Error();
-      req.session.uid = user.id;
-      res.status(202).send(user);
+      if (await bcrypt.compare(password, user.password)) {
+        req.session.uid = user.id;
+        res.status(202).send({
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+        });
+      } else {
+        throw new Error();
+      }
     }
   } catch (error) {
     console.log(error);
     res
       .status(401)
       .send({ error: "401", message: "Username or password is incorrect" });
-  }
-};
-
-const profile = async (req, res) => {
-  try {
-    const { id, firstName, lastName } = req.user;
-    const user = { id, firstName, lastName };
-    console.log(user);
-    res.status(200).send(user);
-  } catch (error) {
-    console.log(error);
-    res.status(404).send({ error, message: "User not found" });
   }
 };
 
@@ -78,7 +69,7 @@ const logout = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-  const { email } = req.body;
+  const { email } = req.headers.input;
   const user = await User.findOne({
     where: {
       email: email,
@@ -95,4 +86,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { create, login, logout, profile, deleteUser };
+module.exports = { create, login, logout, deleteUser };

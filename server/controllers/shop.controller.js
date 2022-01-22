@@ -1,98 +1,31 @@
 const Shop = require("../models/shops.model");
+const cloudinary = require("../utils/cloudinary");
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
-const createShop = async (req, res) => {
+const findShopsByUserId = async (req, res) => {
   try {
-    const { products, picture } = req.body;
-    const prodArr = products.split(",");
-    const pictArr = picture.split(",");
-    const shop = await Shop.create({
-      ...req.body,
-      products: prodArr,
-      picture: pictArr,
+    let UserId = req.session.uid;
+    const shops = await Shop.findAll({
+      where: {
+        UserId: UserId,
+      },
     });
-    res.status(201).send(shop);
+    res.status(200).send(shops);
   } catch (error) {
     console.log(error);
-    res.status(400).send({ error: "400", message: "Could not create shop" });
+    res.sendStatus(500);
   }
 };
 
-const addImageToShop = async (req, res) => {
+const deleteUserShop = async (req, res) => {
   try {
-    const upload = require("./image.controller");
-    const newPicture = req.body.picture;
-    const shopId = req.body.shopId;
-    const shop = Shop.findOne({
-      where: { id: shopId },
-    }).then((shop) => {
-      shop.sequelize.query(
-        `UPDATE "Shops" SET picture='{${[
-          shop.picture,
-          newPicture,
-        ]}}'WHERE id=${shopId}`
-      );
-    });
-
-    res.status(200).send(shop);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send({ error: "400", message: "Could not create shop" });
-  }
-};
-
-const addProductsToShop = async (req, res) => {
-  try {
-    const { products } = req.body;
-    const newProdArr = products.split(",");
-    const shopId = req.body.shopId;
-
-    const shop = Shop.findOne({
-      where: { id: shopId },
-    }).then((shop) => {
-      shop.sequelize.query(
-        `UPDATE "Shops" SET products='{${[
-          shop.products,
-          ...newProdArr,
-        ]}}'WHERE id=${shopId}`
-      );
-    });
-
-    res.status(200).send(shop);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send({ error: "400", message: "Could not create shop" });
-  }
-};
-
-const removeProduct = async (req, res) => {
-  try {
-    const productToDelete = req.body.product;
-    const shopId = req.body.shopId;
-    const shop = Shop.findOne({
-      where: { id: shopId },
-    }).then((shop) => {
-      shop.sequelize.query(
-        `UPDATE "Shops" SET products='{${[
-          shop.products.filter((product) => product !== productToDelete),
-        ]}}'WHERE id=${shopId}`
-      );
-    });
-
-    res.status(200).send(shop);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send({ error: "400", message: "Could not create shop" });
-  }
-};
-
-const deleteShop = async (req, res) => {
-  try {
-    const shop = Shop.findByPk(req.shopId);
-    if (!shop) {
-      res.status(404).send({ message: "Shop not found.", error: "404" });
-    } else {
+    const shop = await Shop.findByPk(req.body.id);
+    if (shop) {
       await shop.destroy();
-      res.status(202).send({ message: "Shop oblitirated", error: "202" });
+      res.status(202).send("Shop obliterated");
+    } else {
+      res.status(404).send({ message: "Shop not found.", error: "404" });
     }
   } catch (error) {
     console.log(error);
@@ -103,10 +36,121 @@ const deleteShop = async (req, res) => {
   }
 };
 
+const createShop = async (req, res) => {
+  try {
+    // we are assuming that we are gettin an already built SHOP object from the frontend
+    // so req.body should MATCH the SHOP MODEL
+    // if req.body does not match the MODEL it will catch an error
+    const shop = await Shop.create(req.body);
+    res.status(201).send(shop);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ error: "400", message: "Could not create shop" });
+  }
+};
+
+const addProducts = async (req, res) => {
+  try {
+    const { products, shopId } = req.body;
+    Shop.findOne({
+      where: { id: shopId },
+    })
+      .then((shop) => {
+        const oldProducts = shop.products;
+        const productAlreadyExists = products.some((el) =>
+          oldProducts.includes(el)
+        );
+        if (oldProducts && !productAlreadyExists) {
+          return shop.set({
+            products: [...oldProducts, ...products],
+          });
+        } else if (oldProducts && productAlreadyExists) {
+          throw new Error();
+        } else {
+          return shop.set({
+            products: [...products],
+          });
+        }
+      })
+      .then((shop) => {
+        shop.save();
+        res.status(200).send(shop.products);
+      })
+      .catch((err) => {
+        res
+          .status(404)
+          .send("Already some products already in database, already");
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ error: "400", message: "Could not add product" });
+  }
+};
+
+const removeProduct = async (req, res) => {
+  try {
+    const { product, shopId } = req.body;
+    Shop.findOne({
+      where: { id: shopId },
+    })
+      .then((shop) => {
+        return shop.set({
+          products: [...shop.products].filter((el) => el !== product),
+        });
+      })
+      .then((shop) => {
+        shop.save();
+        res.status(200).send(shop.products);
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ error: "400", message: "Could not create shop" });
+  }
+};
+
+const findShopsByKeyword = async (req, res) => {
+  try {
+    const { q } = req.query;
+    const shops = await Shop.findAll({
+      where: {
+        [Op.or]: [
+          {
+            products: { [Op.contains]: [`%${q}%`] },
+          },
+          {
+            name: { [Op.substring]: `${q}` },
+          },
+        ],
+      },
+    });
+    res.status(200).send(shops);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+};
+
+const addImageToShop = async (req, res) => {
+  try {
+    const { picture, shopId } = req.body;
+    Shop.findOne({
+      where: { id: shopId },
+    }).then((shop) => {
+      shop.set({});
+    });
+
+    res.status(200).send(shop);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ error: "400", message: "Could not create shop" });
+  }
+};
+
 module.exports = {
   createShop,
   addImageToShop,
-  addProductsToShop,
+  addProducts,
   removeProduct,
-  deleteShop,
+  deleteUserShop,
+  findShopsByUserId,
+  findShopsByKeyword,
 };
