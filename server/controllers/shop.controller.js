@@ -84,9 +84,28 @@ const removeProduct = async (req, res) => {
   }
 };
 
+const deleteShop = async (req, res) => {
+  try {
+    const shop = Shop.findByPk(req.shopId);
+    if (!shop) {
+      res.status(404).send({ message: "Shop not found.", error: "404" });
+    } else {
+      await shop.destroy();
+      res.status(202).send({ message: "Shop oblitirated", error: "202" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      error: "400",
+      message: "Shop too gud to delete, please reconsider.",
+    });
+  }
+};
+
 module.exports = {
   createShop,
   addImageToShop,
   addProductsToShop,
   removeProduct,
+  deleteShop,
 };

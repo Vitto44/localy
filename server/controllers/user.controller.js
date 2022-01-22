@@ -28,7 +28,6 @@ const create = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    console.log(req.session);
     const { email, password } = req.body;
     const user = await User.findOne({
       where: {
@@ -83,7 +82,7 @@ const deleteUser = async (req, res) => {
     return res.status(404).send({ error: "404", message: "No user" });
   }
   try {
-    user.destroy();
+    await user.destroy();
     res.status(200).send("User deleted");
   } catch (error) {
     res.status(400).send({ error: "400", message: "Could not delete user" });
