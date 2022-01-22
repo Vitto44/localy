@@ -22,7 +22,7 @@ router.delete("/deleteShop", authMiddleware, shopController.deleteShop); //wanna
 
 // user routes
 // router.post("/user", userController.create); // create user
-router.post("/user", authMiddleware, userController.login); // login user
+router.post("/user", userController.login); // login user
 router.get("/user", authMiddleware, userController.login); // login user
 router.delete("/user", authMiddleware, userController.deleteUser); // delete user
 router.get("/profile", userController.profile);

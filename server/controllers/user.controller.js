@@ -1,9 +1,5 @@
 const User = require("../models/users.model");
 const bcrypt = require("bcrypt");
-// testing git asdfasdf
-// commenting
-// rtestinga
-
 
 const create = async (req, res) => {
   const { email, password } = req.body;
@@ -32,19 +28,22 @@ const create = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    if (!req.body) {
+    console.log(req.body);
+    if (!req.body.email) {
+      console.log("working <=============================================");
       res.sendStatus(202);
+    } else {
+      const { email, password } = req.body;
+      const user = await User.findOne({
+        where: {
+          email: email,
+        },
+      });
+      const validatedPass = await bcrypt.compare(password, user.password);
+      if (!validatedPass) throw new Error();
+      req.session.uid = user.id;
+      res.status(202).send(user);
     }
-    const { email, password } = req.body;
-    const user = await User.findOne({
-      where: {
-        email: email,
-      },
-    });
-    const validatedPass = await bcrypt.compare(password, user.password);
-    if (!validatedPass) throw new Error();
-    req.session.uid = user.id;
-    res.status(202).send(user);
   } catch (error) {
     console.log(error);
     res
