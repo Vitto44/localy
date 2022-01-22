@@ -28,6 +28,9 @@ const create = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    if (!req.body) {
+      res.sendStatus(202);
+    }
     const { email, password } = req.body;
     const user = await User.findOne({
       where: {
@@ -37,7 +40,7 @@ const login = async (req, res) => {
     const validatedPass = await bcrypt.compare(password, user.password);
     if (!validatedPass) throw new Error();
     req.session.uid = user.id;
-    res.status(200).send(user);
+    res.status(202).send(user);
   } catch (error) {
     console.log(error);
     res
