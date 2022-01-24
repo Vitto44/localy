@@ -115,7 +115,7 @@ const findShopsByKeyword = async (req, res) => {
       where: {
         [Op.or]: [
           {
-            products: { [Op.contains]: [`%${q}%`] },
+            products: { [Op.contains]: [`${q}`] },
           },
           {
             name: { [Op.substring]: `${q}` },
@@ -130,6 +130,7 @@ const findShopsByKeyword = async (req, res) => {
 };
 
 const addImageToShop = async (req, res) => {
+  //this one, we need a frontend to test and redone
   try {
     const { picture, shopId } = req.body;
     Shop.findOne({

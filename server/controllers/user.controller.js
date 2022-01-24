@@ -16,6 +16,7 @@ const create = async (req, res) => {
     }
     const hash = await bcrypt.hash(password, 10);
     const newUser = await User.create({ ...req.body, password: hash });
+    console.log("LOG =>=>=>=>=>=>=>=>>>", req.session);
     req.session.uid = newUser.id;
     res.status(201).send(newUser);
   } catch (error) {
@@ -27,6 +28,7 @@ const create = async (req, res) => {
 const login = async (req, res) => {
   try {
     if (!req.body.email) {
+      //used as an auth function
       res.sendStatus(202);
     } else {
       const { email, password } = req.body;
@@ -69,7 +71,7 @@ const logout = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-  const { email } = req.headers.input;
+  const { email } = req.body;
   const user = await User.findOne({
     where: {
       email: email,

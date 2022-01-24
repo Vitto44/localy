@@ -5,6 +5,7 @@ const router = require("../router");
 
 const testPrepper = () => {
   const app = express();
+
   app.use(express.json());
   app.use(router);
   const request = superset(app);
@@ -12,8 +13,8 @@ const testPrepper = () => {
   beforeAll(async () => {
     await sequelize.sync();
   });
-  afterAll((done) => {
-    sequelize.close();
+  afterAll(async (done) => {
+    await sequelize.close();
     done();
   });
   return request;

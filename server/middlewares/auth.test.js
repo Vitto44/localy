@@ -44,16 +44,17 @@ describe("Middleware test", () => {
 
   test("Should execute next when auth is ok", async () => {
     // create new User
-    const newUser = await request.post("/register").send(user);
+    const newUser = await request.post("/create").send(user);
 
     // send get request with uid in payload to /profile endpoint
     request
-      .get("/profile")
+      .get("/login")
       .send(newUser)
-      .then((res) => expect(res.statusCode).toBe(200))
+      .then((res) => {
+        expect(res.statusCode).toBe(200);
+        // delete the newly created user
+        request.delete("/delete").send(user.email);
+      })
       .catch((err) => err);
-
-    // delete the newly created user
-    await request.delete("/deleteUser").send(user.email);
   });
 });
