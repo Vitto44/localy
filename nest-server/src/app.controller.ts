@@ -1,16 +1,19 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Shop } from './database/shop.entity';
+import { Body } from '@nestjs/common';
 
-@Controller('Users')
+@Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('/test')
-  getHello(): string {
-    return this.appService.getHello();
+  @Post('/shop')
+  create(@Body() item: Shop): void {
+    this.appService.createShop(item);
   }
-  @Post('/login')
-  login(): Object {
-    return this.appService.login();
+
+  @Get('/getShops')
+  getShops(): Object {
+    return this.appService.getShops();
   }
 }
