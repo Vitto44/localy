@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike, Like, Raw } from 'typeorm';
-import { Shop } from 'src/database/shop.entity';
+import { Shop } from '../database/shop.entity';
 import { ShopDTO } from './shops.dto';
 import session from 'express-session';
 

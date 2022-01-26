@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { Shop } from './database/shop.entity';
 import { User } from './database/user.entity';
 import config from './ormconfig';
@@ -16,7 +14,7 @@ import { AuthService } from './auth/auth.service';
     TypeOrmModule.forRoot(config),
     TypeOrmModule.forFeature([Shop, User]),
   ],
-  controllers: [AppController, UserController, ShopController],
-  providers: [AppService, UserService, ShopService, AuthService],
+  controllers: [UserController, ShopController],
+  providers: [UserService, ShopService, AuthService],
 })
 export class AppModule {}

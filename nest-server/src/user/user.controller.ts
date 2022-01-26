@@ -5,15 +5,13 @@ import {
   Delete,
   ForbiddenException,
   Get,
-  HttpException,
-  HttpStatus,
   Post,
   Session,
   UnauthorizedException,
 } from '@nestjs/common';
-import { User } from 'src/database/user.entity';
+import { User } from '../database/user.entity';
 import { UserService } from './user.service';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 
 @Controller('user')
 export class UserController {
