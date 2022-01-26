@@ -11,13 +11,14 @@ export class ShopService {
     @InjectRepository(Shop) private shopRepository: Repository<Shop>,
   ) {}
 
-  async createNewShop(shop: Shop): Promise<Shop> {
-    return await this.shopRepository.save(shop);
+  async createNewShop(shop: Shop, sessionId: string): Promise<Shop> {
+    const newShop = { ...shop, ownerId: sessionId };
+    return await this.shopRepository.save(newShop);
   }
 
-  async deleteShopByOwnerId(id: string): Promise<Shop> {
-    const targetShop = await this.shopRepository.findOne({ ownerId: id });
-    await this.shopRepository.delete(targetShop);
+  async deleteShopByOwnerId(shopId: string): Promise<Shop> {
+    const targetShop = await this.shopRepository.findOne({ id: shopId });
+    await this.shopRepository.delete({ id: shopId });
     return targetShop;
   }
 

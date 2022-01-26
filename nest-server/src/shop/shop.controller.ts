@@ -24,11 +24,15 @@ export class ShopController {
   }
 
   @Delete('userShop')
-  async deleteShop(@Session() session: Record<string, any>) {
+  async deleteShop(
+    @Body() body: ShopDTO,
+    @Session() session: Record<string, any>,
+  ) {
     try {
-      if ((await this.authService.auth(session)) === 'authenticated') {
-        return this.shopService.deleteShopByOwnerId(session.uid);
-      }
+      return (
+        (await this.authService.auth(session)) === 'authenticated' &&
+        this.shopService.deleteShopByOwnerId(body.id)
+      );
     } catch (error) {
       console.log(error);
       return error;
@@ -36,16 +40,16 @@ export class ShopController {
   }
 
   @Post('createShop')
-  createShop(@Body() shop: Shop) {
+  createShop(@Body() shop: Shop, @Session() session: Record<string, any>) {
     try {
-      return this.shopService.createNewShop(shop);
+      return this.shopService.createNewShop(shop, session.uid);
     } catch (error) {
       console.log(error);
       return error;
     }
   }
 
-  @Put('/addProducts')
+  @Put('addProducts')
   addProductsToShop(@Body() body: ShopDTO) {
     try {
       return this.shopService.addProductsByShopId(body);
@@ -55,7 +59,7 @@ export class ShopController {
     }
   }
 
-  @Put('/removeProduct')
+  @Put('removeProduct')
   removeProductFromShop(@Body() body: ShopDTO) {
     try {
       return this.shopService.removeProductByShopId(body);
@@ -65,7 +69,7 @@ export class ShopController {
     }
   }
 
-  @Post('/search')
+  @Post('search')
   searchShopsByKeyword(@Body() body: { searchTerm: string }) {
     try {
       return this.shopService.findShopsByKeyword(body);
@@ -75,7 +79,7 @@ export class ShopController {
     }
   }
 
-  @Put('/shop')
+  @Put('shop')
   addImageToShop(@Body() image: string, session: Record<string, any>) {
     try {
       return this.shopService.addImageToShop(image, session.uid);

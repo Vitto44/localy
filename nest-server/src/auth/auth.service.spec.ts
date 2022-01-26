@@ -1,18 +1,23 @@
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { AuthService } from './auth.service';
+import { AuthService } from '../auth/auth.service';
+import { User } from 'src/database/user.entity';
+import { Repository } from 'typeorm';
 
-// describe('AuthService', () => {
-//   let service: AuthService;
+describe('UserController', () => {
+  let authService: AuthService;
+  let userRepository: Repository<User>;
+  beforeEach(() => {
+    authService = new AuthService(userRepository);
+  });
 
-//   beforeEach(async () => {
-//     const module: TestingModule = await Test.createTestingModule({
-//       providers: [AuthService],
-//     }).compile();
+  it('should be defined', async () => {
+    expect(authService).toBeDefined();
+  });
 
-//     service = module.get<AuthService>(AuthService);
-//   });
-
-//   it('should be defined', () => {
-//     expect(service).toBeDefined();
-//   });
-// });
+  describe('Authenticated', () => {
+    it('should authenticate user', async () => {
+      const result: any = 'Authenticated';
+      jest.spyOn(authService, 'auth').mockImplementation(() => result);
+      expect(authService.auth({})).toBe(result);
+    });
+  });
+});

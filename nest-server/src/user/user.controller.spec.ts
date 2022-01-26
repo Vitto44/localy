@@ -1,31 +1,42 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
+import { AuthService } from '../auth/auth.service';
+import { User } from 'src/database/user.entity';
+import { Repository } from 'typeorm';
 
 describe('UserController', () => {
-  let controller: UserController;
-  let user: Object;
-  let service: UserService;
-  beforeEach(async () => {
+  let userController: UserController;
+  let userService: UserService;
+  let authService: AuthService;
+  let userRepository: Repository<User>;
+  let user;
+  beforeEach(() => {
+    userService = new UserService(userRepository);
+    userController = new UserController(userService, authService);
     user = {
-      firstName: 'Bobbyson',
-      lastName: 'Szc',
-      password: '0000',
-      email: 'K@K.Kapa3',
+      email: 's@s.s',
+      firstName: 'me',
+      id: 'meme',
     };
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [UserController],
-    }).compile();
-
-    controller = module.get<UserController>(UserController);
   });
 
-  it('should be defined', () => {
-    expect(2 + 2).toBe(4);
+  it('should be defined', async () => {
+    expect(userController).toBeDefined();
   });
 
-  // it('should create user', async () => {
-  //   await controller.create(user, {});
-  //   expect(service.createUser).toHaveBeenCalled();
-  // });
+  describe('Create', () => {
+    it('should create a user', async () => {
+      const result = user;
+      jest.spyOn(userService, 'createUser').mockImplementation(() => result);
+      expect(userController.create(user, {})).toBe(result);
+    });
+  });
+
+  describe('Login', () => {
+    it('should login user', async () => {
+      const result = user;
+      jest.spyOn(userService, 'login').mockImplementation(() => result);
+      expect(userController.login(user, {})).toBe(result);
+    });
+  });
 });

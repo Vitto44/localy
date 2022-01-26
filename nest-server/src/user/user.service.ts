@@ -53,7 +53,6 @@ export class UserService {
   ////////////////////////////////////////////
   async delete(user: User, session: Record<string, any>): Promise<string> {
     const account = await this.userRepository.findOne({ email: user.email });
-
     if (!account) {
       throw new NotFoundException("Welp, he's not there.");
     }
@@ -68,11 +67,8 @@ export class UserService {
         "It better be right next time, otherwise I'm going for the knees!",
       );
     }
-
-    await this.userRepository.delete;
-    ({ id: account.id });
-
-    return 'User Deleted!';
+    await this.userRepository.delete({ id: account.id });
+    return 'User Deleted';
   }
   //////////////////////////////////////////
   async logout(session: Record<string, any>): Promise<string> {

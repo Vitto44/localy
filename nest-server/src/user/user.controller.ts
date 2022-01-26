@@ -44,7 +44,7 @@ export class UserController {
   async delete(@Body() user: User, @Session() session: Record<string, any>) {
     try {
       if ((await this.authService.auth(session)) === 'authenticated') {
-        this.userService.delete(user, session);
+        return this.userService.delete(user, session);
       } else {
         throw new Error();
       }

@@ -27,10 +27,10 @@ export class Shop {
   @Column({ nullable: true })
   description?: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'float', nullable: false })
   latitude: number;
 
-  @Column({ nullable: false })
+  @Column({ type: 'float', nullable: false })
   longitude: number;
 
   @Column('text', { array: true, nullable: true, default: [] })
