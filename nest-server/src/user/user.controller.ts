@@ -20,7 +20,7 @@ export class UserController {
     private readonly authService: AuthService,
   ) {}
 
-  @Post('create')
+  @Post('register')
   create(
     @Body() user: User,
     @Session() session: Record<string, any>,
@@ -61,6 +61,17 @@ export class UserController {
       return await this.authService.auth(session);
     } catch (error) {
       throw new BadRequestException('Invalid user');
+    }
+  }
+
+  @Get('profile')
+  async GetProfile(
+    @Session() session: Record<string, any>,
+  ): Promise<{ email: string; firstName: string; id: string }> {
+    try {
+      return await this.userService.getProfile(session);
+    } catch (error) {
+      throw new BadRequestException('You new around here?');
     }
   }
 

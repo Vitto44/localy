@@ -5,6 +5,7 @@ import * as session from 'express-session';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({ credentials: true, origin: 'http://localhost:3000' });
   app.use(
     session({
       name: 'sid',
@@ -20,6 +21,7 @@ async function bootstrap() {
       },
     }),
   );
-  await app.listen(3000);
+  await app.listen(3001);
+  console.log(`(☞ﾟヮﾟ)☞ Stuff happening at  http://localhost:3001 ☜(ﾟヮﾟ☜)`);
 }
 bootstrap();

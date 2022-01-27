@@ -33,6 +33,22 @@ export class UserService {
 
     return { email, firstName, id };
   }
+  //////////////////////////////////////////////////
+
+  async getProfile(
+    session: Record<string, any>,
+  ): Promise<{ email: string; firstName: string; id: string }> {
+    //
+    const account = await this.userRepository.findOne({ id: session.uid });
+    if (!account) {
+      throw new ConflictException(null, 'Invalid...stuff! Fix Stuff!');
+    }
+
+    const { email, firstName, id } = account;
+
+    return { email, firstName, id };
+  }
+
   ////////////////////////////////////////////
   async login(
     user: User,

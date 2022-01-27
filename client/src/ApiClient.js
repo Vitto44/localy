@@ -10,8 +10,8 @@ function fetchRequest(url, options) {
 }
 
 export function getShopsByKeyword(keyword) {
-  keyword = { keyword: keyword };
-  return fetchRequest(`${URL}/filteredshops`, {
+  keyword = { searchTerm: keyword };
+  return fetchRequest(`${URL}/shop/search`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -20,22 +20,20 @@ export function getShopsByKeyword(keyword) {
   });
 }
 
-export async function getShopsByUserId(UserId) {
+export function getShopsByUserId(UserId) {
   UserId = { UserId: UserId };
-  console.log(UserId);
-  const test = await fetchRequest(`${URL}/usershops`, {
-    method: "POST",
+  return fetchRequest(`${URL}/shop/userShops`, {
+    method: "GET",
+    credentials: "include",
+    mode: "cors",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(UserId),
   });
-  console.log(test);
-  return test;
 }
 
 export function register(user) {
-  return fetchRequest(`${URL}/register`, {
+  return fetchRequest(`${URL}/user/register`, {
     method: "POST",
     credentials: "include",
     mode: "cors",
@@ -47,19 +45,19 @@ export function register(user) {
 }
 
 export function login(user) {
-  return fetchRequest(`${URL}/login`, {
+  return fetchRequest(`${URL}/user/login`, {
     method: "POST",
     credentials: "include",
     mode: "cors",
     headers: {
       "Content-Type": "application/json",
     },
-    body: user ? JSON.stringify(user) : null,
+    body: JSON.stringify(user),
   });
 }
 
 export function profile() {
-  return fetchRequest(`${URL}/profile`, {
+  return fetchRequest(`${URL}/user/profile`, {
     method: "GET",
     credentials: "include",
     mode: "cors",
@@ -70,8 +68,8 @@ export function profile() {
 }
 
 export function logout() {
-  return fetchRequest(`${URL}/logout`, {
-    method: "POST",
+  return fetchRequest(`${URL}/user/logout`, {
+    method: "GET",
     credentials: "include",
     mode: "cors",
     headers: {
@@ -81,7 +79,8 @@ export function logout() {
 }
 
 export function createShop(shop) {
-  return fetchRequest(`${URL}/createshop`, {
+  console.log(shop);
+  return fetchRequest(`${URL}/shop/createshop`, {
     method: "POST",
     credentials: "include",
     mode: "cors",
@@ -117,8 +116,8 @@ export function addImage(shopIdAndImgUrlObj) {
 }
 
 export function addProducts(shopIdAndProductsObj) {
-  return fetchRequest(`${URL}/addproducts`, {
-    method: "POST",
+  return fetchRequest(`${URL}/shop/addProducts`, {
+    method: "PUT",
     credentials: "include",
     mode: "cors",
     headers: {
@@ -129,8 +128,8 @@ export function addProducts(shopIdAndProductsObj) {
 }
 
 export function removeProduct(shopIdAndProductObj) {
-  return fetchRequest(`${URL}/removeproduct`, {
-    method: "POST",
+  return fetchRequest(`${URL}/shop/removeProduct`, {
+    method: "PUT",
     credentials: "include",
     mode: "cors",
     headers: {

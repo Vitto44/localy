@@ -91,7 +91,7 @@ export class ShopService {
       ' SELECT * FROM "shop" ' + ' where "products" @> ARRAY[$1] ',
       [searchTerm],
     );
-    return shops;
+    return [...products, ...shops];
   }
 
   async addImageToShop(image: string, id: string): Promise<string[]> {
