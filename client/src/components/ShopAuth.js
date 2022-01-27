@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import './ShopAuth.css';
-import { login, register } from '../ApiClient';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import "./ShopAuth.css";
+import { login, register } from "../ApiClient";
+import { useNavigate } from "react-router-dom";
 
 const ShopAuth = (props) => {
   const state = props.state;
@@ -13,10 +13,10 @@ const ShopAuth = (props) => {
   });
 
   const [user, setUser] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
   });
 
   useEffect(() => {
@@ -38,91 +38,94 @@ const ShopAuth = (props) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     await login(user);
-    navigate('/profile', { state });
+    navigate("/profile", { state });
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     await register(user);
-    navigate('/profile');
+    navigate("/profile");
   };
 
   const hideForm = () => {
     setForm({
       show: false,
-      styles: { transform: 'translateY(100%)' },
-      which: 'none',
+      styles: { transform: "translateY(100%)" },
+      which: "none",
     });
 
     setUser({
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
     });
   };
 
   const toggleForm = () => {
-    const toWhichForm = form.which === 'login' ? 'register' : 'login';
+    const toWhichForm = form.which === "login" ? "register" : "login";
     setForm({ ...form, which: toWhichForm });
     setUser({
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
     });
   };
 
   return (
     <>
       {form.show === true ? (
-        <div className='shopAuthWrap' style={form.styles}>
+        <div className="shopAuthWrap" style={form.styles}>
           <img
-            className='whitePinLogotype'
-            src={require('../assets/purple_pin.png')}
-            alt='Localy Pin Icon'></img>
+            className="whitePinLogotype"
+            src={require("../assets/purple_pin.png")}
+            alt="Localy Pin Icon"
+          ></img>
           <img
-            className='fullLogotype'
-            src={require('../assets/purple_logo_full.png')}
-            alt='Localy Logotype'></img>
-          <h1 className='loginPageH1'>Introduce your login details</h1>
-          {form.which === 'login' ? (
+            className="fullLogotype"
+            src={require("../assets/purple_logo_full.png")}
+            alt="Localy Logotype"
+          ></img>
+          <h1 className="loginPageH1">Introduce your login details</h1>
+          {form.which === "login" ? (
             <>
-              <form className='loginForm' onSubmit={handleLogin}>
+              <form className="loginForm" onSubmit={handleLogin}>
                 <input
-                  className='formInput email'
-                  name='email'
+                  className="formInput email"
+                  name="email"
                   onChange={handleInputChange}
-                  type='email'
+                  type="email"
                   value={user.email}
-                  placeholder='Enter your email'
+                  placeholder="Enter your email"
                   required
                 />
                 <input
-                  className='formInput password'
-                  name='password'
+                  className="formInput password"
+                  name="password"
                   onChange={handleInputChange}
-                  type='password'
+                  type="password"
                   value={user.password}
-                  placeholder='Enter your password'
+                  placeholder="Enter your password"
                   required
                 />
-                <button className='submitBtn' type='submit'>
+                <button className="submitBtn" type="submit">
                   Log In
                 </button>
               </form>
-              <h2 className='formPageH2'>I don't have a shopkeeper account</h2>
-              <button className='changeFormBtn' onClick={toggleForm}>
+              <h2 className="formPageH2">I don't have a shopkeeper account</h2>
+              <button className="changeFormBtn" onClick={toggleForm}>
                 Register
               </button>
               <img
-                className='logLocalyFormIcon'
-                src={require('../assets/purple_logo_short.png')}
-                alt='Localy Icon'></img>
-              <button className='closeFormBtn' onClick={hideForm}>
+                className="logLocalyFormIcon"
+                src={require("../assets/purple_logo_short.png")}
+                alt="Localy Icon"
+              ></img>
+              <button className="closeFormBtn" onClick={hideForm}>
                 <img
-                  src={require('../assets/cross.png')}
-                  alt='Click to close'
+                  src={require("../assets/cross.png")}
+                  alt="Click to close"
                 />
               </button>
             </>
@@ -130,57 +133,58 @@ const ShopAuth = (props) => {
             <>
               <form onSubmit={handleRegister}>
                 <input
-                  className='formInput'
-                  name='firstName'
+                  className="formInput"
+                  name="firstName"
                   onChange={handleInputChange}
-                  type='text'
+                  type="text"
                   value={user.firstName}
-                  placeholder='Enter your first name'
+                  placeholder="Enter your first name"
                   required
                 />
                 <input
-                  className='formInput'
-                  name='lastName'
+                  className="formInput"
+                  name="lastName"
                   onChange={handleInputChange}
-                  type='text'
+                  type="text"
                   value={user.lastName}
-                  placeholder='Enter your last name'
+                  placeholder="Enter your last name"
                   required
                 />
                 <input
-                  className='formInput'
-                  name='email'
+                  className="formInput"
+                  name="email"
                   onChange={handleInputChange}
-                  type='email'
+                  type="email"
                   value={user.email}
-                  placeholder='Enter your e-mail'
+                  placeholder="Enter your e-mail"
                   required
                 />
                 <input
-                  className='formInput'
-                  name='password'
+                  className="formInput"
+                  name="password"
                   onChange={handleInputChange}
-                  type='password'
+                  type="password"
                   value={user.password}
-                  placeholder='Enter your password'
+                  placeholder="Enter your password"
                   required
                 />
-                <button className='submitBtn' type='submit'>
+                <button className="submitBtn" type="submit">
                   Register
                 </button>
               </form>
-              <h2 className='regFormPageH2'>I already have an account</h2>
-              <button className='changeFormBtn' onClick={toggleForm}>
+              <h2 className="regFormPageH2">I already have an account</h2>
+              <button className="changeFormBtn" onClick={toggleForm}>
                 Log In
               </button>
               <img
-                className='regLocalyFormIcon'
-                src={require('../assets/purple_logo_short.png')}
-                alt='Localy Icon'></img>
-              <button className='closeFormBtn' onClick={hideForm}>
+                className="regLocalyFormIcon"
+                src={require("../assets/purple_logo_short.png")}
+                alt="Localy Icon"
+              ></img>
+              <button className="closeFormBtn" onClick={hideForm}>
                 <img
-                  src={require('../assets/cross.png')}
-                  alt='Click to close'
+                  src={require("../assets/cross.png")}
+                  alt="Click to close"
                 />
               </button>
             </>

@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { profile, logout, getShopsByUserId } from '../ApiClient';
-import CreateShopForm from './CreateShopForm';
-import ShopElement from './ShopElement';
-import './Profile.css';
-import { ReactComponent as NoShopsIllustration } from '../assets/noShopsIllustration.svg';
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import { profile, logout, getShopsByUserId } from "../ApiClient";
+import CreateShopForm from "./CreateShopForm";
+import ShopElement from "./ShopElement";
+import "./Profile.css";
+import { ReactComponent as NoShopsIllustration } from "../assets/noShopsIllustration.svg";
 
 const Profile = (props) => {
   // setting an user profile wihtout registration?
   const [user, setUser] = useState({
     id: 0,
-    firstName: '',
-    lastName: '',
+    firstName: "",
+    lastName: "",
     shops: 0,
   });
 
@@ -19,7 +19,7 @@ const Profile = (props) => {
 
   const [activeForm, setActiveForm] = useState({
     show: false,
-    styles: { transform: 'translateY(100%)' },
+    styles: { transform: "translateY(100%)" },
   });
 
   const { state } = useLocation();
@@ -38,7 +38,7 @@ const Profile = (props) => {
           };
         });
       } else {
-        console.log('No user info found 😞');
+        console.log("No user info found 😞");
       }
     };
 
@@ -53,7 +53,7 @@ const Profile = (props) => {
           };
         });
       } else {
-        console.log('No shops 😞');
+        console.log("No shops 😞");
       }
     };
     getProfile();
@@ -63,13 +63,13 @@ const Profile = (props) => {
   const navigate = useNavigate();
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
   };
 
   const handleCreateShop = () => {
     setActiveForm({
       show: true,
-      styles: { transform: 'translateY(0%)' },
+      styles: { transform: "translateY(0%)" },
     });
   };
 
@@ -77,10 +77,10 @@ const Profile = (props) => {
     let foundShop = shops.find((shop) => shop.id === shopId);
     let shopCopy = { ...foundShop };
     let filteredShops = shops.filter((shop) => shop.id !== shopId);
-    if (direction === 'add') {
-      let productNamesArr = updatedProductName.split(',');
+    if (direction === "add") {
+      let productNamesArr = updatedProductName.split(",");
       shopCopy.products = [...shopCopy.products, ...productNamesArr];
-    } else if (direction === 'remove') {
+    } else if (direction === "remove") {
       shopCopy.products = shopCopy.products.filter(
         (name) => name !== updatedProductName
       );
@@ -90,23 +90,24 @@ const Profile = (props) => {
   }
 
   return (
-    <section className='shopKeeperProfileWrap'>
-      <button className='logoutBtn' onClick={handleLogout}>
-        <img src={require('../assets/logout.png')} alt='Click to logout' />
+    <section className="shopKeeperProfileWrap">
+      <button className="logoutBtn" onClick={handleLogout}>
+        <img src={require("../assets/logout.png")} alt="Click to logout" />
       </button>
       <button
-        className='mapBtn'
+        className="mapBtn"
         onClick={() => {
-          navigate('/map', { state });
-        }}>
+          navigate("/map", { state });
+        }}
+      >
         <img
-          src={require('../assets/map_white.png')}
-          alt='Click to got o map'
+          src={require("../assets/map_white.png")}
+          alt="Click to got o map"
         />
       </button>
-      <h1 className='profileGreeting'>Hello, {user.firstName}!</h1>
-      <h2 className='shopsListTitle'>Your shops</h2>
-      <section className='shopsWrap'>
+      <h1 className="profileGreeting">Hello, {user.firstName}!</h1>
+      <h2 className="shopsListTitle">Your shops</h2>
+      <section className="shopsWrap">
         {shops.length ? (
           shops.map((shop) => (
             <ShopElement
@@ -116,14 +117,14 @@ const Profile = (props) => {
             />
           ))
         ) : (
-          <div className='noShopsWrap'>
-            <h3 className='noShopsH3'>You have no shops in the map</h3>
-            <NoShopsIllustration className='noShopsIllustration' />
+          <div className="noShopsWrap">
+            <h3 className="noShopsH3">You have no shops in the map</h3>
+            <NoShopsIllustration className="noShopsIllustration" />
           </div>
         )}
       </section>
-      <h3 className='placeShopH3'>Do you want to place a shop in the map?</h3>
-      <button className='newShopFormBtn' onClick={handleCreateShop}>
+      <h3 className="placeShopH3">Do you want to place a shop in the map?</h3>
+      <button className="newShopFormBtn" onClick={handleCreateShop}>
         Create a new shop
       </button>
       <CreateShopForm
@@ -134,9 +135,10 @@ const Profile = (props) => {
         setUser={setUser}
       />
       <img
-        className='profLocalyFormIcon'
-        src={require('../assets/purple_logo_short.png')}
-        alt='Localy Icon'></img>
+        className="profLocalyFormIcon"
+        src={require("../assets/purple_logo_short.png")}
+        alt="Localy Icon"
+      ></img>
     </section>
   );
 };

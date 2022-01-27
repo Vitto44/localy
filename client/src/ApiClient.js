@@ -9,20 +9,21 @@ function fetchRequest(url, options) {
     });
 }
 
-export function getShopsByKeyword(keyword) {
+export async function getShopsByKeyword(keyword) {
   keyword = { searchTerm: keyword };
-  return fetchRequest(`${URL}/shop/search`, {
+  const test = await fetchRequest(`${URL}/shop/search`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(keyword),
   });
+  return test;
 }
 
-export function getShopsByUserId(UserId) {
+export async function getShopsByUserId(UserId) {
   UserId = { UserId: UserId };
-  return fetchRequest(`${URL}/shop/userShops`, {
+  const test = await fetchRequest(`${URL}/shop/userShops`, {
     method: "GET",
     credentials: "include",
     mode: "cors",
@@ -30,6 +31,7 @@ export function getShopsByUserId(UserId) {
       "Content-Type": "application/json",
     },
   });
+  return test;
 }
 
 export function register(user) {
@@ -79,7 +81,6 @@ export function logout() {
 }
 
 export function createShop(shop) {
-  console.log(shop);
   return fetchRequest(`${URL}/shop/createshop`, {
     method: "POST",
     credentials: "include",

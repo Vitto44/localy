@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import ShopAuth from './ShopAuth';
-import './Home.css';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import ShopAuth from "./ShopAuth";
+import "./Home.css";
 
 const Home = () => {
   // position, setPosition
-  const [state, setstate] = useState({
+  const [state, setState] = useState({
     longitude: 0,
     latitude: 0,
   });
 
   const [activeForm, setActiveForm] = useState({
     show: false,
-    styles: { transform: 'translateY(100%)' },
-    which: 'none',
+    styles: { transform: "translateY(100%)" },
+    which: "none",
   });
 
   const handleClick = (whichform) => {
     setActiveForm({
       show: true,
-      styles: { transform: 'translateY(0%)' },
+      styles: { transform: "translateY(0%)" },
       which: whichform,
     });
   };
@@ -27,7 +27,7 @@ const Home = () => {
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       function (position) {
-        setstate({
+        setState({
           longitude: position.coords.longitude,
           latitude: position.coords.latitude,
         });
@@ -40,33 +40,37 @@ const Home = () => {
   }, []);
 
   return (
-    <section className='homePageWrap'>
+    <section className="homePageWrap">
       <img
-        className='whitePinLogotype'
-        src={require('../assets/white_pin.png')}
-        alt='Localy Pin Icon'></img>
+        className="whitePinLogotype"
+        src={require("../assets/white_pin.png")}
+        alt="Localy Pin Icon"
+      ></img>
       <img
-        className='fullLogotype'
-        src={require('../assets/white_logo_full.png')}
-        alt='Localy Logotype'></img>
-      <h1 className='homePageH1'>Find your local shopkeeper</h1>
-      <Link className='mapLink' to={'/map'} state={state}>
-        <button className='goToMapBtn'>Go to Map</button>
+        className="fullLogotype"
+        src={require("../assets/white_logo_full.png")}
+        alt="Localy Logotype"
+      ></img>
+      <h1 className="homePageH1">Find your local shopkeeper</h1>
+      <Link className="mapLink" to={"/map"} state={state}>
+        <button className="goToMapBtn">Go to Map</button>
       </Link>
-      <section className='loginSection'>
-        <h2 className='homePageH2'>Are you a shop owner?</h2>
+      <section className="loginSection">
+        <h2 className="homePageH2">Are you a shop owner?</h2>
         <button
-          className='loginBtn'
+          className="loginBtn"
           onClick={(e) => {
-            handleClick('login');
-          }}>
+            handleClick("login");
+          }}
+        >
           Login
         </button>
         <button
-          className='registerBtn'
+          className="registerBtn"
           onClick={(e) => {
-            handleClick('register');
-          }}>
+            handleClick("register");
+          }}
+        >
           Register
         </button>
         <ShopAuth activeForm={activeForm} state={state} />

@@ -42,7 +42,7 @@ export class ShopController {
   @Post('createShop')
   createShop(@Body() shop: Shop, @Session() session: Record<string, any>) {
     try {
-      return this.shopService.createNewShop(shop, session.uid);
+      return this.shopService.createNewShop(shop, session);
     } catch (error) {
       console.log(error);
       return error;
@@ -70,9 +70,10 @@ export class ShopController {
   }
 
   @Post('search')
-  searchShopsByKeyword(@Body() body: { searchTerm: string }) {
+  async searchShopsByKeyword(@Body() body: { searchTerm: string }) {
     try {
-      return this.shopService.findShopsByKeyword(body);
+      const res = await this.shopService.findShopsByKeyword(body);
+      return res;
     } catch (error) {
       console.log(error);
       return error;

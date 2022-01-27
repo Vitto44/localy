@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike, Like, Raw } from 'typeorm';
 import { Shop } from '../database/shop.entity';
 import { ShopDTO } from './shops.dto';
-import session from 'express-session';
 
 @Injectable()
 export class ShopService {
@@ -11,9 +10,14 @@ export class ShopService {
     @InjectRepository(Shop) private shopRepository: Repository<Shop>,
   ) {}
 
-  async createNewShop(shop: Shop, sessionId: string): Promise<Shop> {
-    const newShop = { ...shop, ownerId: sessionId };
-    return await this.shopRepository.save(newShop);
+  async createNewShop(shop: Shop, session: any): Promise<Shop> {
+    const products = [shop.products];
+    const newShop = { ...shop, ownerId: session.uid, products: [] };
+
+    const shopando = await this.shopRepository.save(newShop);
+    const { id } = shopando;
+    await this.addProductsByShopId({ products, id });
+    return shopando;
   }
 
   async deleteShopByOwnerId(shopId: string): Promise<Shop> {
@@ -22,11 +26,11 @@ export class ShopService {
     return targetShop;
   }
 
-  async findByOwnerId(id: string): Promise<Shop> {
-    return await this.shopRepository.findOne({ ownerId: id });
+  async findByOwnerId(id: string): Promise<Shop[]> {
+    return await this.shopRepository.find({ ownerId: id });
   }
 
-  async addProductsByShopId(body: ShopDTO): Promise<string[]> {
+  async addProductsByShopId(body: any): Promise<string[]> {
     // destructure body of the request
     const { products, id } = body;
 
@@ -91,7 +95,8 @@ export class ShopService {
       ' SELECT * FROM "shop" ' + ' where "products" @> ARRAY[$1] ',
       [searchTerm],
     );
-    return [...products, ...shops];
+
+    return products;
   }
 
   async addImageToShop(image: string, id: string): Promise<string[]> {

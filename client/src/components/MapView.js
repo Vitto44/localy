@@ -1,14 +1,14 @@
-import 'leaflet/dist/leaflet.css';
-import './MapView.css';
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
-import L from 'leaflet';
-import userPosition from '../assets/youarehere.png';
-import shopPosition from '../assets/purple_pin_shadow.png';
-import { getShopsByKeyword } from '../ApiClient';
-import Search from './Search';
-import ShopDetails from './ShopDetails';
+import "leaflet/dist/leaflet.css";
+import "./MapView.css";
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import L from "leaflet";
+import userPosition from "../assets/youarehere.png";
+import shopPosition from "../assets/purple_pin_shadow.png";
+import { getShopsByKeyword } from "../ApiClient";
+import Search from "./Search";
+import ShopDetails from "./ShopDetails";
 
 const MapView = () => {
   const location = useLocation();
@@ -16,7 +16,7 @@ const MapView = () => {
   const [shopDetails, setShopDetails] = useState({
     show: false,
     isFullyUnfolded: false,
-    styles: { transform: 'translateY(100%)' },
+    styles: { transform: "translateY(100%)" },
     shop: {},
   });
   const [initialLocation] = useState({
@@ -43,7 +43,7 @@ const MapView = () => {
     setShopDetails({
       ...shopDetails,
       show: false,
-      styles: { transform: 'translateY(100%)' },
+      styles: { transform: "translateY(100%)" },
       shop: {},
     });
   }
@@ -52,7 +52,7 @@ const MapView = () => {
     setShopDetails({
       ...shopDetails,
       show: true,
-      styles: { transform: 'translateY(70%)' },
+      styles: { transform: "translateY(70%)" },
       shop: shopList.filter((shop) => shop.id === id),
     });
   };
@@ -69,14 +69,15 @@ const MapView = () => {
 
   return (
     <MapContainer
-      className='mapContainer'
+      className="mapContainer"
       center={initialLocation.currentLocation}
       zoom={initialLocation.zoom}
-      zoomControl={false}>
-      <Search className='searchComponent' filterShops={filterShops} />
+      zoomControl={false}
+    >
+      <Search className="searchComponent" filterShops={filterShops} />
       <TileLayer
         attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-        url='https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png'
+        url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
       />
       <Marker position={initialLocation.currentLocation} icon={youAreHere} />
       {shopList.map((shop) => (
